@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    image: birdnest-frontend-dev
+    container_name: birdnest-frontend-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 3000:3000
