@@ -1,4 +1,4 @@
-import { nestPosition } from '../constants';
+import { nestPosition } from './constants';
 
 const distanceFromNest = (positionX: number, positionY: number): number => {
   const distanceInMm = Math.sqrt(

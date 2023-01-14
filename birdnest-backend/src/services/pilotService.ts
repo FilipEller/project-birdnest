@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as yup from 'yup';
-import { tenMinutesInMilliseconds } from '../constants';
+import { tenMinutesInMilliseconds } from '../utils/constants';
 import { violatingDrones } from './droneService';
 
 export interface RawPilot {
