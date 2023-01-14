@@ -23,6 +23,7 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'object-curly-spacing': ['error', 'always'],
     'arrow-spacing': ['error', { before: true, after: true }],
+    'typescript-eslint.io/rules/no-explicit-any': 0,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -31,4 +32,7 @@ module.exports = {
     sourceType: 'module',
   },
   ignorePatterns: ['build', 'node_modules'],
+  settings: {
+    'import/resolver': 'webpack',
+  },
 };
