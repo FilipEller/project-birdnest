@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   server:
-    image: birdnest-backend
-    build: .
+    image: filipeller/apps:birdnest-backend
+    container_name: birdnest-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 3001:3001

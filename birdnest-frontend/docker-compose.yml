@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: birdnest-frontend
+    image: filipeller/apps:birdnest-frontend
     container_name: birdnest-frontend
     build:
       context: .
