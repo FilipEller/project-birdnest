@@ -21,15 +21,5 @@ services:
       - ./birdnest-backend:/usr/src/app
     ports:
       - 3001:3001
-  nginx:
-    image: nginx:1.20.1
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - 8080:80
-    container_name: birdnest-reverse-proxy
-    depends_on:
-      - app
-      - server
   busybox:
     image: busybox

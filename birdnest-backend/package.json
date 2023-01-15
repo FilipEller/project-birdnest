@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "build:ui": "rm -rf build-ui && cd ../birdnest-frontend && npm run build && mv build build-ui && mv build-ui ../birdnest-backend"
   },
   "author": "",
   "license": "ISC",

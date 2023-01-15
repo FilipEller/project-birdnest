@@ -9,6 +9,7 @@ import {
 
 const app = express();
 app.use(express.json());
+app.use(express.static('build-ui'));
 
 const PORT = 3001;
 
@@ -19,15 +20,15 @@ schedule.scheduleJob('*/2 * * * * *', async () => {
   removeObsoletePilots();
 });
 
-app.get('/', (_req, res) => {
+app.get('/api', (_req, res) => {
   res.send('ok');
 });
 
-app.get('/drones', (_req, res) => {
+app.get('/api/drones', (_req, res) => {
   return res.json(drones);
 });
 
-app.get('/pilots', (_req, res) => {
+app.get('/api/pilots', (_req, res) => {
   return res.json(pilots);
 });
 
