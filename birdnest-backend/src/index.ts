@@ -1,5 +1,5 @@
 import schedule from 'node-schedule';
-import { updateDrones } from './services/droneService';
+import { drones, updateDrones, Drone } from './services/droneService';
 import {
   addViolatingPilots,
   removeObsoletePilots,
@@ -14,7 +14,7 @@ const httpServer = http.createServer(app);
 import { Server } from 'socket.io';
 
 interface ServerToClientEvents {
-  pilotUpdate: (pilots: Pilot[]) => void;
+  update: (pilots: Pilot[], drones: Drone[]) => void;
 }
 
 const io = new Server<object, ServerToClientEvents, object, object>(
@@ -27,7 +27,7 @@ schedule.scheduleJob('*/2 * * * * *', async () => {
   await updateDrones();
   await addViolatingPilots();
   removeObsoletePilots();
-  io.emit('pilotUpdate', pilots);
+  io.emit('update', pilots, drones);
 });
 
 io.on('connection', _socket => {

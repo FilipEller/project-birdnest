@@ -6,6 +6,8 @@ import distanceFromNest from '../utils/distanceFromNest';
 
 export interface Drone {
   serialNumber: string;
+  positionX: number;
+  positionY: number;
   distance: number;
 }
 export interface RawDrone {
@@ -55,7 +57,7 @@ export const fetchDrones = async (): Promise<Drone[] | null> => {
           drones = jsonDrones.map((drone: RawDrone) => {
             const { serialNumber, positionX, positionY } = drone;
             const distance = distanceFromNest(positionX, positionY);
-            return { serialNumber, distance };
+            return { serialNumber, positionX, positionY, distance };
           });
         }
       }
