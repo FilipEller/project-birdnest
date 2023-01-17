@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
+import { nestLocation, areaSize } from '../utils/constants';
 
 export interface Drone {
   serialNumber: string;
@@ -32,7 +33,7 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       },
       {
         label: 'Nest',
-        data: [{ x: 250, y: 250 }],
+        data: [{ x: nestLocation.x, y: nestLocation.y }],
         backgroundColor: 'rgba(132, 99, 255, 1)',
         pointStyle: 'triangle',
         radius: 10,
@@ -45,11 +46,11 @@ function DroneMap({ drones }: { drones: Drone[] }) {
     scales: {
       x: {
         beginAtZero: true,
-        max: 500,
+        max: areaSize.width,
       },
       y: {
         beginAtZero: true,
-        max: 500,
+        max: areaSize.height,
       },
     },
   };
@@ -59,7 +60,7 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       <Typography variant='h5' component='h2'>
         Drones in the area
       </Typography>
-      <Scatter data={data} options={options} />
+      <Scatter data={data} options={options} data-testid='droneChart' id='droneChart' />
     </Box>
   );
 }
