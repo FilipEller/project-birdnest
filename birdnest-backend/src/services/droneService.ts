@@ -1,7 +1,6 @@
 import axios from 'axios';
 import parser from 'xml2js';
 import * as yup from 'yup';
-import isString from '../utils/isString';
 import distanceFromNest from '../utils/distanceFromNest';
 
 export interface Drone {
@@ -31,6 +30,8 @@ const rawDroneSchema = yup.object().shape({
   positionY: yup.number().min(0).max(500000).required(),
 });
 
+const stringSchema = yup.string();
+
 const droneArraySchema = yup.array().of(rawDroneSchema);
 
 export const fetchDrones = async (): Promise<Drone[] | null> => {
@@ -39,7 +40,10 @@ export const fetchDrones = async (): Promise<Drone[] | null> => {
     const monitoringResponse = await axios.get(
       'http://assignments.reaktor.com/birdnest/drones'
     );
-    if (!monitoringResponse?.data || !isString(monitoringResponse?.data)) {
+    if (
+      !stringSchema.isValidSync(monitoringResponse?.data) ||
+      !monitoringResponse?.data
+    ) {
       return null;
     }
 
