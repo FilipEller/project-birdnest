@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container } from '@mui/material';
 import { io, Socket } from 'socket.io-client';
 import PilotList from './components/PilotList';
 import DroneMap, { Drone } from './components/DroneMap';
@@ -30,13 +31,20 @@ const App = () => {
   }, []);
 
   return (
-    <div className='App'>
+    <Container
+      className='App'
+      maxWidth='md'
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
       <Typography variant='h3' component='h1'>
         Birdnest
       </Typography>
       <DroneMap drones={drones} />
       {<PilotList pilots={pilots} />}
-    </div>
+    </Container>
   );
 };
 

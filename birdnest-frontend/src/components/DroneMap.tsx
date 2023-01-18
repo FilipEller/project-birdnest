@@ -60,7 +60,12 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       <Typography variant='h5' component='h2'>
         Drones in the area
       </Typography>
-      <Scatter data={data} options={options} data-testid='droneChart' id='droneChart' />
+      <Scatter
+        data={data}
+        options={options}
+        data-testid='droneChart'
+        id='droneChart'
+      />
     </Box>
   );
 }

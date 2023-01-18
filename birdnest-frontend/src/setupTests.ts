@@ -4,3 +4,8 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 import 'jest-canvas-mock';
+
+jest.mock('react-chartjs-2', () => ({
+  // eslint-disable-next-line
+  Scatter: (props: any) => props['data-testid'],
+}));

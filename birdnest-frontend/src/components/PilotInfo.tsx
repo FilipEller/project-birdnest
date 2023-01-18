@@ -20,7 +20,7 @@ export interface Pilot {
 
 const PilotInfo = ({ pilot }: { pilot: Pilot }) => {
   return (
-    <Accordion>
+    <Accordion sx={{ minWidth: 900 }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls='pilot-info'
