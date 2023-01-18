@@ -30,7 +30,9 @@ schedule.scheduleJob('*/2 * * * * *', async () => {
 });
 
 io.on('connection', _socket => {
-  console.log('a user connected');
+  if (NODE_ENV === 'development') {
+    console.log('a user connected');
+  }
 });
 
 httpServer.listen(PORT, () => {
