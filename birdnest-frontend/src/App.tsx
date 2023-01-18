@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { io, Socket } from 'socket.io-client';
 import PilotList from './components/PilotList';
 import DroneMap, { Drone } from './components/DroneMap';
@@ -31,19 +31,19 @@ const App = () => {
   }, []);
 
   return (
-    <Container
-      className='App'
-      maxWidth='md'
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-      <Typography variant='h3' component='h1'>
+    <Container className='App' maxWidth='lg'>
+      <Typography variant='h3' component='h1' sx={{ textAlign: 'center' }}>
         Birdnest
       </Typography>
-      <DroneMap drones={drones} />
-      {<PilotList pilots={pilots} />}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'start',
+        }}>
+        <DroneMap drones={drones} />
+        {<PilotList pilots={pilots} />}
+      </Box>
     </Container>
   );
 };

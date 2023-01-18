@@ -1,10 +1,10 @@
 import { memo } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import PilotDetails, { Pilot } from './PilotInfo';
 
 const PilotList = ({ pilots }: { pilots: Pilot[] }) => {
   return (
-    <div data-testid='pilot-list'>
+    <Box data-testid='pilot-list' sx={{ padding: '15px' }}>
       <Typography variant='h5' component='h2'>
         Violating pilots
       </Typography>
@@ -21,7 +21,7 @@ const PilotList = ({ pilots }: { pilots: Pilot[] }) => {
       ) : (
         <p>No violations within the last 10 minutes.</p>
       )}
-    </div>
+    </Box>
   );
 };
 

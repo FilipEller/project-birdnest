@@ -83,8 +83,8 @@ const DroneMap = ({ drones }: { drones: Drone[] }) => {
   return (
     <Box
       sx={{
-        maxWidth: 600,
-        minWidth: '30%',
+        minWidth: '70%',
+        padding: '15px',
       }}>
       <Typography variant='h5' component='h2' sx={{ textAlign: 'center' }}>
         Drones in the area
