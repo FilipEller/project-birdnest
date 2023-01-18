@@ -20,7 +20,7 @@ export interface Pilot {
 
 const PilotInfo = ({ pilot }: { pilot: Pilot }) => {
   return (
-    <Accordion sx={{ minWidth: 900 }}>
+    <Accordion sx={{ maxWidth: 800 }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls='pilot-info'
@@ -33,7 +33,7 @@ const PilotInfo = ({ pilot }: { pilot: Pilot }) => {
           <Typography>{pilot.email}</Typography>
           <Typography>{pilot.phoneNumber}</Typography>
           <Typography>
-            Violated at:{' '}
+            Last violation at{' '}
             {new Intl.DateTimeFormat('en-UK', {
               year: 'numeric',
               month: '2-digit',
@@ -43,9 +43,7 @@ const PilotInfo = ({ pilot }: { pilot: Pilot }) => {
               second: '2-digit',
             }).format(pilot.lastViolation)}
           </Typography>
-          <Typography>
-            Closest distance to nest: {pilot.closestDistance} m
-          </Typography>
+          <Typography>{pilot.closestDistance} m from the nest</Typography>
         </div>
       </AccordionDetails>
     </Accordion>

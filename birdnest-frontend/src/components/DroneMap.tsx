@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { Box, Typography } from '@mui/material';
 import {
   Chart as ChartJS,
@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
-import { nestLocation, areaSize } from '../utils/constants';
+import { nestLocation, areaSize, ndzRadius } from '../utils/constants';
 
 export interface Drone {
   serialNumber: string;
@@ -20,7 +20,20 @@ export interface Drone {
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-function DroneMap({ drones }: { drones: Drone[] }) {
+const DroneMap = ({ drones }: { drones: Drone[] }) => {
+  const numPoints = 50;
+  const ndzPerimeter = useMemo(
+    () =>
+      Array.from({ length: numPoints }, (_, index) => {
+        const angle = (index * 2 * Math.PI) / numPoints;
+        return {
+          x: (ndzRadius * Math.cos(angle) + nestLocation.x) / 1000,
+          y: (ndzRadius * Math.sin(angle) + nestLocation.y) / 1000,
+        };
+      }),
+    []
+  );
+
   const data = {
     datasets: [
       {
@@ -29,7 +42,7 @@ function DroneMap({ drones }: { drones: Drone[] }) {
           x: drone.positionX / 1000,
           y: drone.positionY / 1000,
         })),
-        backgroundColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(130, 164, 1)',
       },
       {
         label: 'Nest',
@@ -37,6 +50,12 @@ function DroneMap({ drones }: { drones: Drone[] }) {
         backgroundColor: 'rgba(132, 99, 255, 1)',
         pointStyle: 'triangle',
         radius: 10,
+      },
+      {
+        label: 'No-Drone-Zone',
+        data: ndzPerimeter,
+        backgroundColor: 'rgba(220, 99, 126, 1)',
+        radius: 1,
       },
     ],
   };
@@ -47,17 +66,27 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       x: {
         beginAtZero: true,
         max: areaSize.width / 1000,
+        ticks: {
+          stepSize: 50,
+        },
       },
       y: {
         beginAtZero: true,
         max: areaSize.height / 1000,
+        ticks: {
+          stepSize: 50,
+        },
       },
     },
   };
 
   return (
-    <Box sx={{ maxWidth: 600 }}>
-      <Typography variant='h5' component='h2'>
+    <Box
+      sx={{
+        maxWidth: 600,
+        minWidth: '30%',
+      }}>
+      <Typography variant='h5' component='h2' sx={{ textAlign: 'center' }}>
         Drones in the area
       </Typography>
       <Scatter
@@ -68,6 +97,6 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       />
     </Box>
   );
-}
+};
 
 export default memo(DroneMap);
