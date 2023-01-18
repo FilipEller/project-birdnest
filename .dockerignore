@@ -1,0 +1,51 @@
+# flyctl launch added from birdnest-backend\.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+birdnest-backend\node_modules
+birdnest-backend\.pnp
+birdnest-backend\**\.pnp.js
+
+# testing
+birdnest-backend\coverage
+
+# production
+birdnest-backend\build
+birdnest-backend\build-ui
+
+# misc
+birdnest-backend\**\.DS_Store
+birdnest-backend\**\.env.local
+birdnest-backend\**\.env.development.local
+birdnest-backend\**\.env.test.local
+birdnest-backend\**\.env.production.local
+
+birdnest-backend\**\npm-debug.log*
+birdnest-backend\**\yarn-debug.log*
+birdnest-backend\**\yarn-error.log*
+
+# flyctl launch added from birdnest-frontend\.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+birdnest-frontend\node_modules
+birdnest-frontend\.pnp
+birdnest-frontend\**\.pnp.js
+
+# testing
+birdnest-frontend\coverage
+
+# production
+birdnest-frontend\build
+
+# misc
+birdnest-frontend\**\.DS_Store
+birdnest-frontend\**\.env.local
+birdnest-frontend\**\.env.development.local
+birdnest-frontend\**\.env.test.local
+birdnest-frontend\**\.env.production.local
+
+birdnest-frontend\**\npm-debug.log*
+birdnest-frontend\**\yarn-debug.log*
+birdnest-frontend\**\yarn-error.log*
+fly.toml

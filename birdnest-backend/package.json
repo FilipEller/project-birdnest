@@ -7,11 +7,12 @@
     "start": "cross-env NODE_ENV=production node build/index.js",
     "start:full": "npm run build:ui && npm run build && npm start",
     "test": "cross-env NODE_ENV=test jest --verbose",
-    "build": "tsc",
     "tsc": "tsc",
     "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
+    "build": "tsc",
     "build:ui": "rm -rf build-ui && cd ../birdnest-frontend && npm run build && mv build build-ui && mv build-ui ../birdnest-backend",
+    "build:full": "npm run build:ui && npm run build",
     "ts-jest": "ts-jest"
   },
   "author": "",

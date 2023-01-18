@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   server:
-    image: filipeller/apps:birdnest-backend
-    container_name: birdnest-backend
+    image: birdnest
+    container_name: birdnest
     build:
       context: .
       dockerfile: Dockerfile
