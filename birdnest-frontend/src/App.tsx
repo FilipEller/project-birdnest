@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
-import PilotList, { Pilot } from './components/PilotList';
+import PilotList from './components/PilotList';
 import DroneMap, { Drone } from './components/DroneMap';
+import { Pilot } from './components/PilotInfo';
 import { Typography } from '@mui/material';
 
 interface ServerToClientEvents {

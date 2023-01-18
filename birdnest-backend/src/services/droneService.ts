@@ -1,8 +1,7 @@
-import axios from 'axios';
 import parser from 'xml2js';
 import * as yup from 'yup';
-import isString from '../utils/isString';
 import distanceFromNest from '../utils/distanceFromNest';
+import api from '../utils/api';
 
 export interface Drone {
   serialNumber: string;
@@ -10,22 +9,11 @@ export interface Drone {
   positionY: number;
   distance: number;
 }
-export interface RawDrone {
+interface RawDrone {
   serialNumber: string;
   positionX: number;
   positionY: number;
 }
-
-export let drones: Drone[] = [];
-export let violatingDrones: Drone[] = [];
-
-export const updateDrones = async () => {
-  const newDrones = await fetchDrones();
-  if (newDrones) {
-    drones = newDrones;
-    violatingDrones = newDrones.filter((drone: Drone) => drone.distance <= 100);
-  }
-};
 
 const rawDroneSchema = yup.object().shape({
   serialNumber: yup.string().required(),
@@ -35,37 +23,48 @@ const rawDroneSchema = yup.object().shape({
 
 const droneArraySchema = yup.array().of(rawDroneSchema);
 
-export const fetchDrones = async (): Promise<Drone[] | null> => {
-  try {
-    let drones: Drone[] = [];
-    const monitoringResponse = await axios.get(
-      'http://assignments.reaktor.com/birdnest/drones'
-    );
-    if (!monitoringResponse?.data || !isString(monitoringResponse?.data)) {
-      return null;
+export const stringSchema = yup.string();
+
+let drones: Drone[] = [];
+let violatingDrones: Drone[] = [];
+
+export const getDrones = (): Drone[] => drones;
+export const getViolatingDrones = (): Drone[] => violatingDrones;
+
+const fetchDrones = async (): Promise<Drone[]> => {
+  let drones: Drone[] = [];
+  const xmlDrones = await api.fetch('drones');
+
+  if (!xmlDrones || !stringSchema.isValidSync(xmlDrones)) {
+    return [];
+  }
+
+  parser.parseString(xmlDrones, { explicitArray: false }, (err, json) => {
+    if (err) {
+      return;
     }
+    const jsonDrones: unknown = json?.report?.capture?.drone;
+    if (jsonDrones && droneArraySchema.isValidSync(jsonDrones)) {
+      drones = jsonDrones.map((drone: RawDrone) => {
+        const { serialNumber, positionX, positionY } = drone;
+        const distance = distanceFromNest(positionX, positionY);
+        return {
+          serialNumber,
+          distance,
+          positionX: Number(positionX),
+          positionY: Number(positionY),
+        };
+      });
+    }
+  });
 
-    parser.parseString(
-      monitoringResponse.data,
-      { explicitArray: false },
-      (err, json) => {
-        if (err) {
-          return;
-        }
-        const jsonDrones: unknown = json?.report?.capture?.drone;
-        if (jsonDrones && droneArraySchema.isValidSync(jsonDrones)) {
-          drones = jsonDrones.map((drone: RawDrone) => {
-            const { serialNumber, positionX, positionY } = drone;
-            const distance = distanceFromNest(positionX, positionY);
-            return { serialNumber, positionX, positionY, distance };
-          });
-        }
-      }
-    );
+  return drones;
+};
 
-    return drones;
-  } catch (err) {
-    console.log(err);
-    return null;
+export const updateDrones = async () => {
+  const newDrones = await fetchDrones();
+  if (newDrones) {
+    drones = newDrones;
+    violatingDrones = newDrones.filter((drone: Drone) => drone.distance <= 100);
   }
 };

@@ -1,6 +1,6 @@
 import express from 'express';
-import { drones } from './services/droneService';
-import { pilots } from './services/pilotService';
+import { getDrones } from './services/droneService';
+import { getPilots } from './services/pilotService';
 import cors from 'cors';
 import morgan from 'morgan';
 import { NODE_ENV } from './utils/config';
@@ -18,11 +18,15 @@ app.get('/api', (_req, res) => {
 });
 
 app.get('/api/drones', (_req, res) => {
-  return res.json(drones);
+  return res.json(getDrones());
 });
 
 app.get('/api/pilots', (_req, res) => {
-  return res.json(pilots);
+  return res.json(getPilots());
+});
+
+app.use('/*', (_req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' });
 });
 
 export default app;

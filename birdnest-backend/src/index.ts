@@ -1,9 +1,9 @@
 import schedule from 'node-schedule';
-import { drones, updateDrones, Drone } from './services/droneService';
+import { getDrones, updateDrones, Drone } from './services/droneService';
 import {
-  addViolatingPilots,
+  updateViolatingPilots,
   removeObsoletePilots,
-  pilots,
+  getPilots,
   Pilot,
 } from './services/pilotService';
 import { PORT, NODE_ENV } from './utils/config';
@@ -23,11 +23,10 @@ const io = new Server<object, ServerToClientEvents, object, object>(
 );
 
 schedule.scheduleJob('*/2 * * * * *', async () => {
-  console.log('running scheduled task');
   await updateDrones();
-  await addViolatingPilots();
+  await updateViolatingPilots();
   removeObsoletePilots();
-  io.emit('update', pilots, drones);
+  io.emit('update', getPilots(), getDrones());
 });
 
 io.on('connection', _socket => {

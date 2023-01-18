@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as yup from 'yup';
+import api from '../utils/api';
 import { tenMinutesInMilliseconds } from '../utils/constants';
-import { violatingDrones } from './droneService';
+import { getViolatingDrones, stringSchema } from './droneService';
 
 export interface RawPilot {
   pilotId: string;
@@ -30,10 +30,42 @@ const rawPilotSchema = yup.object().shape({
   phoneNumber: yup.string().required(),
 });
 
-export let pilots: Pilot[] = [];
+let pilots: Pilot[] = [];
 
-export const addViolatingPilots = async () => {
+export const getPilots = (): Pilot[] => pilots;
+
+export const fetchPilot = async (
+  serialNumber: string,
+  lastViolation: number,
+  closestDistance: number
+): Promise<Pilot | null> => {
+  const pilotData = await api.fetch(`pilots/${serialNumber}`);
+
+  const pilotObject: unknown =
+    stringSchema.isValidSync(pilotData) && pilotData
+      ? JSON.parse(pilotData)
+      : pilotData;
+
+  if (rawPilotSchema.isValidSync(pilotObject)) {
+    const { pilotId, firstName, lastName, email, phoneNumber } = pilotObject;
+    return {
+      pilotId,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      droneSerialNumber: serialNumber,
+      lastViolation,
+      closestDistance,
+    };
+  } else {
+    return null;
+  }
+};
+
+export const updateViolatingPilots = async () => {
   const currentTime = Date.now();
+  const violatingDrones = getViolatingDrones();
 
   for (let i = 0; i < violatingDrones.length; i++) {
     const drone = violatingDrones[i];
@@ -65,37 +97,4 @@ export const removeObsoletePilots = () => {
     (pilot: Pilot) =>
       currentTime - pilot.lastViolation <= tenMinutesInMilliseconds
   );
-};
-
-export const fetchPilot = async (
-  serialNumber: string,
-  lastViolation: number,
-  closestDistance: number
-): Promise<Pilot | null> => {
-  try {
-    const pilotResponse = await axios.get(
-      `https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`
-    );
-
-    const pilotData: unknown = pilotResponse?.data;
-
-    if (rawPilotSchema.isValidSync(pilotData)) {
-      const { pilotId, firstName, lastName, email, phoneNumber } = pilotData;
-      return {
-        pilotId,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        droneSerialNumber: serialNumber,
-        lastViolation,
-        closestDistance,
-      };
-    } else {
-      return null;
-    }
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
 };
