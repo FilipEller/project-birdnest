@@ -33,7 +33,7 @@ function DroneMap({ drones }: { drones: Drone[] }) {
       },
       {
         label: 'Nest',
-        data: [{ x: nestLocation.x, y: nestLocation.y }],
+        data: [{ x: nestLocation.x / 1000, y: nestLocation.y / 1000 }],
         backgroundColor: 'rgba(132, 99, 255, 1)',
         pointStyle: 'triangle',
         radius: 10,
@@ -46,17 +46,17 @@ function DroneMap({ drones }: { drones: Drone[] }) {
     scales: {
       x: {
         beginAtZero: true,
-        max: areaSize.width,
+        max: areaSize.width / 1000,
       },
       y: {
         beginAtZero: true,
-        max: areaSize.height,
+        max: areaSize.height / 1000,
       },
     },
   };
 
   return (
-    <Box sx={{ maxWidth: 500 }}>
+    <Box sx={{ maxWidth: 600 }}>
       <Typography variant='h5' component='h2'>
         Drones in the area
       </Typography>
