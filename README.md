@@ -8,12 +8,14 @@ The running application can be visited [here](https://misty-bird-6153.fly.dev/).
 ## Getting started
 All instructions start with a terminal open in the root of the project.
 
-With Docker:
+### With Docker:
 
 Run the application in production mode: `docker-compose -f docker-compose.yml up --build`  
 Run the application in development mode: `docker-compose -f docker-compose.dev.yml up --build`
 
-Without Docker:
+### Without Docker:
+
+As a prerequisite, install [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 Run the application in production mode:  
 1. `cd birdnest-frontend`
